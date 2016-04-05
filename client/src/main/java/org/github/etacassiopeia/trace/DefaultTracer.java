@@ -32,8 +32,8 @@ public class DefaultTracer implements Tracer {
     private final ActorSystem system;
     private final ActorRef mgr;
 
-    int POOL_SIZE = 10;
-    KryoPool kryo = KryoPool.withByteArrayOutputStream(POOL_SIZE, new KryoInstantiator());
+    private int POOL_SIZE = 10;
+    private KryoPool kryo = KryoPool.withByteArrayOutputStream(POOL_SIZE, new KryoInstantiator());
 
     public DefaultTracer() {
         system = ActorSystem.apply("KafkaSpanStoreSystem");
@@ -76,7 +76,7 @@ public class DefaultTracer implements Tracer {
         private Span parent = null;
         Map<String, String> tags = new HashMap<>();
 
-        public DefaultSpanBuilder(Tracer tracer) {
+        DefaultSpanBuilder(Tracer tracer) {
             this.tracer = tracer;
         }
 

@@ -31,6 +31,8 @@ object Kafka extends ExtensionId[Kafka] with ExtensionIdProvider {
 
   override def lookup(): ExtensionId[_ <: Extension] = Kafka
 
-  case class SpanMessage[K, V](topic: String, key: Array[Byte], payload: Array[Byte])
+  override def get(system: ActorSystem): Kafka = super.get(system)
+
+  case class SpanMessage(payload: Array[Byte])
 
 }

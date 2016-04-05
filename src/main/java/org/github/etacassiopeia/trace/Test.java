@@ -14,10 +14,12 @@ import opentracing.Tracer;
 public class Test {
     public static void main(String[] args) {
         Tracer tracer = new DefaultTracer();
-        Span test = tracer.buildSpan().withTag("key1", "value1").withOperationName("fetcher").start();
 
+        Span test = tracer.buildSpan().withTag("key1", "value1").withOperationName("fetcher").start();
         test.finish();
 
         System.out.println(test);
+
+        tracer.close();
     }
 }

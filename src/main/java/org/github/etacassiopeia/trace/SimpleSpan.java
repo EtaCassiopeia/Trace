@@ -1,6 +1,7 @@
 package org.github.etacassiopeia.trace;
 
 import opentracing.Span;
+import opentracing.Tracer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.UUID;
  */
 public class SimpleSpan implements Span, Serializable {
 
+    private transient Tracer tracer;
+
     private String operationName;
     private UUID spanId;
     private UUID parentSpanId = null;
@@ -29,26 +32,26 @@ public class SimpleSpan implements Span, Serializable {
     private Map<String, String> bags = new HashMap<>();
     private List<Log> logs = new ArrayList<>();
 
-    public SimpleSpan(String operationName) {
-        this(operationName, null);
+    public SimpleSpan(Tracer tracer, String operationName) {
+        this(tracer, operationName, null);
     }
 
-    public SimpleSpan(String operationName, UUID parentSpanId) {
-        this(operationName, parentSpanId, System.currentTimeMillis());
+    public SimpleSpan(Tracer tracer, String operationName, UUID parentSpanId) {
+        this(tracer, operationName, parentSpanId, System.currentTimeMillis());
     }
 
-    public SimpleSpan(String operationName, UUID parentSpanId, long startTimestamp) {
+    public SimpleSpan(Tracer tracer, String operationName, UUID parentSpanId, long startTimestamp) {
         spanId = java.util.UUID.randomUUID();
         this.operationName = operationName;
         this.parentSpanId = parentSpanId;
         this.startTimestamp = startTimestamp;
+        this.tracer = tracer;
     }
 
     @Override
     public void finish() {
         this.finishTimestamp = System.currentTimeMillis();
-        //TODO replace this temporary message with real implementation
-        System.out.println("finished");
+        tracer.persist(this);
     }
 
     @Override

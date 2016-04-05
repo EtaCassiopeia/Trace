@@ -16,6 +16,8 @@ import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, Produce
   */
 class KafkaProducerManager(config: Config) extends Actor {
 
+  private val topic = config.getString("topic")
+
   private val kafkaProducerConfig = {
     val props = new Properties()
     props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getString("bootstrap-server-list"))
@@ -32,8 +34,8 @@ class KafkaProducerManager(config: Config) extends Actor {
   val producer = new KafkaProducer[Array[Byte], Array[Byte]](kafkaProducerConfig)
 
   override def receive: Receive = {
-    case Kafka.SpanMessage(topic, key, message) =>
-      producer.send(new ProducerRecord[Array[Byte], Array[Byte]](topic, key, message))
+    case Kafka.SpanMessage(message) =>
+      producer.send(new ProducerRecord[Array[Byte], Array[Byte]](topic, message))
   }
 
   @scala.throws[Exception](classOf[Exception])

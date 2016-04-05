@@ -91,6 +91,11 @@ public interface Tracer {
     // <T> SpanBuilder join(T carrier);
 
 
+    //Close Tracer and release resources
+    void close();
+
+    void persist(Span span);
+
     interface SpanBuilder {
 
         /**

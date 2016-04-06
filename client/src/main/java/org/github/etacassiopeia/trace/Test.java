@@ -12,7 +12,7 @@ import opentracing.Tracer;
  * @since 12/03/16
  */
 public class Test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Tracer tracer = new DefaultTracer();
 
         Span test = tracer.buildSpan().withTag("key1", "value1").withOperationName("fetcher").start();

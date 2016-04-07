@@ -1,7 +1,6 @@
 import sbt._
 import Keys._
 
-
 object TraceBuild extends Build {
 
   lazy val copyDependencies = TaskKey[Unit]("copy-dependencies")
@@ -34,12 +33,13 @@ object TraceBuild extends Build {
     libraryDependencies := Seq(
       "org.apache.spark" % "spark-core_2.11" % "1.6.1",
       "org.apache.spark" % "spark-streaming_2.11" % "1.6.1",
-      "org.apache.spark" % "spark-streaming-kafka_2.11" % "1.6.1" % "compile",
+      "org.apache.spark" % "spark-streaming-kafka_2.11" % "1.6.1",
       "joda-time" % "joda-time" % "2.9.3",
       "org.eclipse.jetty" % "jetty-servlet" % "9.3.8.v20160314"
     ),
     copyDepTask
   )
+
   lazy val client = project.dependsOn(common).settings(commonSettings: _*)
     .settings(
       libraryDependencies := Seq(

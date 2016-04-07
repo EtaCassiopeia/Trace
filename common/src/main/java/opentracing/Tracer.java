@@ -92,7 +92,7 @@ public interface Tracer {
 
 
     //Close Tracer and release resources
-    void close();
+    void close() throws Exception;
 
     void persist(Span span);
 

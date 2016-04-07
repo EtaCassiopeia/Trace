@@ -51,15 +51,13 @@ public class DefaultTracer implements Tracer {
     }
 
     @Override
-    public void close() {
-        Future<Boolean> stopped = gracefulStop(mgr, Duration.create(5, TimeUnit.SECONDS), system);
-        try {
-            Await.result(stopped, Duration.create(6, TimeUnit.SECONDS));
-        } catch (Exception e) {
-        }
+    public void close() throws Exception {
+        //process all received messages before termination
+        Future<Boolean> stopped = gracefulStop(mgr, Duration.create(5, TimeUnit.SECONDS));
+        Await.result(stopped, Duration.create(5, TimeUnit.SECONDS));
 
-        system.shutdown();
-        system.awaitTermination();
+        system.terminate();
+        Await.result(system.whenTerminated(), Duration.create(5, TimeUnit.SECONDS));
     }
 
     @Override

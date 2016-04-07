@@ -40,6 +40,8 @@ class KafkaProducerManager(config: Config) extends Actor {
 
   @scala.throws[Exception](classOf[Exception])
   override def postStop(): Unit = {
+    println("**** shutting down ...")
     producer.close()
+    println("**** shutdown")
   }
 }
